@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Not, Repository } from "typeorm";
 import { UserEntity } from './user.entity';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
@@ -15,6 +15,10 @@ export class UsersService {
     private jwtService: JwtService,
   ) {}
 
+  /**
+   * Registration for new User
+   * @param userDto
+   */
   async register(userDto: RegisterDto) {
     const email = await this.usersRepository.findOneBy({
       email: userDto.email,
@@ -29,6 +33,10 @@ export class UsersService {
     return await this.usersRepository.save(newUser);
   }
 
+  /**
+   * Login user
+   * @param userDto
+   */
   async login(userDto: LoginDto): Promise<any> {
     const user = await this.usersRepository.findOneBy({ email: userDto.email });
     const password = await bcrypt.compare(
@@ -41,8 +49,23 @@ export class UsersService {
     return this.loginResponse(user);
   }
 
+  /**
+   * Get user by ID & email
+   * @param id
+   * @param email
+   */
   async findUserByIdEmail(id: number, email: string) {
     return await this.usersRepository.findOneByOrFail({ id, email });
+  }
+
+  /**
+   * Get all users except logged-in user
+   * @param except
+   */
+  async findAllUsers(except?: number) {
+    return await this.usersRepository.find({
+      where: { id: Not(except) },
+    });
   }
 
   /** Response login

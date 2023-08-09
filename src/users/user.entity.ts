@@ -6,11 +6,13 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-import { Exclude } from "class-transformer";
+import { Exclude } from 'class-transformer';
+import { TasksEntity } from '../tasks/tasks.entity';
 
 @Entity('users')
 export class UserEntity {
@@ -41,6 +43,9 @@ export class UserEntity {
 
   @DeleteDateColumn()
   deletedAt?: Date;
+
+  @OneToMany(() => TasksEntity, (tasks) => tasks.user)
+  tasks: TasksEntity[];
 
   @BeforeInsert()
   @BeforeUpdate()

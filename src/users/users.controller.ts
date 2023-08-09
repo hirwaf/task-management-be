@@ -30,4 +30,10 @@ export class UsersController {
   getProfile(@Request() req) {
     return req.user;
   }
+
+  @UseGuards(AuthGuard)
+  @Get('/all')
+  getAllUsers(@Request() req) {
+    return this.usersService.findAllUsers(req.user.id);
+  }
 }
