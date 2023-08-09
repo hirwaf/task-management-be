@@ -1,6 +1,9 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import helmet from 'helmet';
+import configuration from './config/configuration';
+import 'reflect-metadata';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -12,6 +15,8 @@ async function bootstrap() {
     origin: false,
   });
 
-  await app.listen(3000);
+  app.useGlobalPipes(new ValidationPipe());
+
+  await app.listen(configuration().port);
 }
 bootstrap();
