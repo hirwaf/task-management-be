@@ -23,7 +23,7 @@ export class CreateDto {
   @IsOptional()
   @IsDateString()
   end?: Date;
-  @IsNotEmpty()
+  @IsOptional()
   isDraft: boolean;
   @IsOptional()
   assignees?: number[];

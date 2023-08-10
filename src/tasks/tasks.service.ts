@@ -200,12 +200,6 @@ export class TasksService {
     attachments: Array<Express.Multer.File>,
   ) {
     const entity = new TasksEntity(task);
-    entity.assignees = await this.usersRepository.findBy({
-      id: In(task.assignees || []),
-    });
-    entity.projects = await this.projectsRepository.findBy({
-      id: In(task.projects || []),
-    });
     const updateTask = await this.tasksRepository.update(
       { id: id, user: user },
       entity,

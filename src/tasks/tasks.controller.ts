@@ -85,7 +85,6 @@ export class TasksController {
     @Body() task: CreateDto,
     @UploadedFiles() attachments?: Array<Express.Multer.File>,
   ): Promise<TasksEntity> {
-    // console.log(attachments);
     return this.tasksService.createTask(req.user, task, attachments);
   }
   @Patch('/:id')
