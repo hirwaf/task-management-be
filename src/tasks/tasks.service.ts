@@ -120,7 +120,11 @@ export class TasksService {
    * @param id
    */
   async getOneTask(user: UserEntity, id: number) {
-    return user.tasks.find((task) => task.id === id);
+    return this.tasksRepository
+      .createQueryBuilder('task')
+      .where('task.id = :task', { task: id })
+      .where('task.userId = :userId', { userId: user.id })
+      .getOne();
   }
 
   /**
@@ -143,7 +147,7 @@ export class TasksService {
    * Get Projects
    */
   async getProjects() {
-    return this.projectsRepository.find();
+    return this.projectsRepository.createQueryBuilder('project').getMany();
   }
 
   /**
@@ -230,9 +234,13 @@ export class TasksService {
    * @param taskId
    */
   async deleteTask(user, taskId: number) {
-    return this.tasksRepository.findOne({
-      where: { id: taskId, user: user },
-    });
+    this.tasksRepository
+      .createQueryBuilder('task')
+      .where('task.id = :task', { task: taskId })
+      .where('task.userId = :userId', { userId: user.id })
+      .softDelete();
+
+    return;
   }
 
   async saveAttachment(

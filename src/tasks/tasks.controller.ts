@@ -62,6 +62,10 @@ export class TasksController {
     }
     return res.download(file);
   }
+  @Get('/projects/list')
+  async projects(@Request() req) {
+    return this.tasksService.getProjects();
+  }
   @Get('/:id')
   async getTask(@Request() req, @Param('id') id: number): Promise<TasksEntity> {
     return this.tasksService.getOneTask(req.user, id);
@@ -94,10 +98,7 @@ export class TasksController {
     return this.tasksService.updateTask(req.user, id, task, attachments);
   }
   @Delete('/:id')
-  async deleteTask(
-    @Request() req,
-    @Param('id') id: number,
-  ): Promise<TasksEntity | null> {
+  async deleteTask(@Request() req, @Param('id') id: number) {
     return this.tasksService.deleteTask(req.user, id);
   }
 }
