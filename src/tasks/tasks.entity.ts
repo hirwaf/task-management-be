@@ -11,6 +11,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { UserEntity } from '../users/user.entity';
+import { CreateDto } from './dto/create.dto';
 
 export enum PriorityEnum {
   High = 'High',
@@ -20,6 +21,17 @@ export enum PriorityEnum {
 
 @Entity('tasks')
 export class TasksEntity {
+  constructor(task?: CreateDto) {
+    if (task) {
+      this.title = task.title;
+      this.description = task.description;
+      this.priority = task.priority ?? PriorityEnum.Normal;
+      this.start = task.start;
+      this.end = task.end;
+      this.isDraft = task.isDraft;
+    }
+  }
+
   @PrimaryGeneratedColumn()
   id: number;
 

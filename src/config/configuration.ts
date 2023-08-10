@@ -17,4 +17,7 @@ export default () => ({
       expiresIn: process.env.JWT_EXPIRES_IN,
     },
   },
+  fileSystem: {
+    attachments: process.env.ATTACHMENT_PATH,
+  },
 });

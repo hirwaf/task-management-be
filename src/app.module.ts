@@ -4,6 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 import { TasksModule } from './tasks/tasks.module';
 import configuration from './config/configuration';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [
@@ -16,6 +17,13 @@ import configuration from './config/configuration';
       useFactory: (configService: ConfigService) => {
         return configService.get('database');
       },
+    }),
+    MulterModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        dest: configService.get('fileSystem.attachments'),
+      }),
+      inject: [ConfigService],
     }),
     UsersModule,
     TasksModule,

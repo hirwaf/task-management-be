@@ -16,8 +16,7 @@ export class CreateDto {
   @MaxLength(100)
   description?: string;
   @IsOptional()
-  @IsEnum(PriorityEnum)
-  priority?: PriorityEnum;
+  priority: PriorityEnum;
   @IsOptional()
   @IsDateString()
   start?: Date;
@@ -26,7 +25,8 @@ export class CreateDto {
   end?: Date;
   @IsNotEmpty()
   isDraft: boolean;
-  assignees?: number[] = [];
-  attachments?: number[] = [];
-  projects?: number[] = [];
+  @IsOptional()
+  assignees?: number[];
+  @IsOptional()
+  projects?: number[];
 }

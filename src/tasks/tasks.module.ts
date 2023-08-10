@@ -5,6 +5,7 @@ import { AttachmentEntity, ProjectEntity, TasksEntity } from './tasks.entity';
 import { TasksService } from './tasks.service';
 import { TasksController } from './tasks.controller';
 import { UsersService } from '../users/users.service';
+import { ExportService } from '../export/export.service';
 
 @Module({
   imports: [
@@ -15,7 +16,7 @@ import { UsersService } from '../users/users.service';
       ProjectEntity,
     ]),
   ],
-  providers: [TasksService, UsersService],
+  providers: [TasksService, UsersService, ExportService],
   controllers: [TasksController],
 })
 export class TasksModule {}
